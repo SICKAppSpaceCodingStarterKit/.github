@@ -77,14 +77,17 @@ You are wondering how to contribute to this project? Here's a quick rundown:
 ### How to use CSK modules in other Git projects?
 
 Currently our recommendation is to use CSK modules within your projects via Git subtrees and to place them within an extra 'subtrees' folder.  
+
 By using subtrees it becomes possible to use specific versions of the modules within your project.  
+
 Creating symbolic links to the subtree modules makes it possible to clone the repository and to directly use the file structure as working directory in AppStudio / VS Code.  
+
 Before cloning, please make sure that within your gitconfig you set the parameter 'core.symlinks' to TRUE.  
 It is possible to set and check this parameter via:  
-    ```
-	git config --global core.symlink true 
+
+    git config --global core.symlink true  
     git config core.symlinks  
-    ```
+
 Additionally it is also possible to directly download the complete project (incl. the used modules) as a ZIP file from GitHub to implement it easily via Drag&Drop in SICK AppStudio.  
 
 To make use of subtrees you should follow these steps:  
