@@ -76,38 +76,56 @@ You are wondering how to contribute to this project? Here's a quick rundown:
 
 ### How to use CSK modules in other Git projects?
 
-Currently our recommendation is to use CSK modules within your projects via Git subtrees.  
-By doing this, it is possible to use specific versions of the modules within your project.  
-Additionally you can directly download the complete project (incl. the used modules) as a ZIP file from GitHub to implement it easily via Drag&Drop in SICK AppStudio.
+Currently our recommendation is to use CSK modules within your projects via Git subtrees and to place them within an extra 'subtrees' folder.  
 
-This can be done via:
+By using subtrees it becomes possible to use specific versions of the modules within your project.  
 
-1. Adding the subtree as a remote to be able to refer to it:  
+Creating symbolic links to the subtree modules makes it possible to clone the repository and to directly use the file structure as working directory in AppStudio / VS Code.  
+
+Before cloning, please make sure that within your gitconfig you set the parameter 'core.symlinks' to TRUE.  
+It is possible to set and check this parameter via:  
+
+    git config --global core.symlink true  
+    git config core.symlinks  
+
+Additionally it is also possible to directly download the complete project (incl. the used modules) as a ZIP file from GitHub to implement it easily via Drag&Drop in SICK AppStudio.  
+
+To make use of subtrees you should follow these steps:  
+
+1. Add a 'subtrees' folder to your repository
+
+2. Adding the subtree as a remote to be able to refer to it:  
     ```
     git remote add -f <remoteName> URL  
     (e.g.: git remote add -f PersistentDataModule https://github.com/SICKAppSpaceCodingStarterKit/CSK_Module_PersistentData )
     ```
-2. Now add the subtree by referring to the remote:  
+3. Now add the subtree by referring to the remote:  
     ```
-    git subtree add --prefix <folderName> <remoteName> <release/tag> --squash  
-    (e.g.: git subtree add --prefix CSK_Module_PersistentData PersistentDataModule v3.0.0 --squash )
+    git subtree add --prefix subtrees/<folderName> <remoteName> <release/tag> --squash  
+    (e.g.: git subtree add --prefix subtrees/CSK_Module_PersistentData PersistentDataModule v3.0.0 --squash )
+    ```
+	
+4. Add symbolic links within your main folder to the app relevant part of the subtree:
+    ```
+	mklink /D <moduleName> subtrees\<moduleFolderName>\<moduleName>  
+    (e.g.: mklink /D CSK_Module_PersistentData subtrees\CSK_Module_PersistentData\CSK_Module_PersistentData )  
     ```
     
 If you want to update the module included in your project to a newer version of it, you can do it like this:
 
 1. First delete the module subtree:  
     ```
-    git rm -r <subtree>
-    (e.g.: git rm -r CSK_Module_PersistentData )
+    git rm -r subtrees/<subtreeName>
+    (e.g.: git rm -r subtrees/CSK_Module_PersistentData )
     ```
 2. Commit it:  
     ```
     git commit
     ```
-3. Add the subtree again as a remote and add subtree as mentioned above but now with updated 'release/tag'...
+3. Add the subtree again as a remote and add subtree as mentioned above but now with updated 'release/tag'...  
 
 ***WARNING***  
-Please state within the README.md of your repository which folders were added as subtrees to avoid that there will be further development within this copied modules, as this would create a parallel development beside the original repository.  
+Please state within the README.md of your repository which modules were added as subtrees to avoid that there will be further development within this copied modules, as this would create a parallel development beside the original repository.  
 If you want to update / improve a used module for your project, please make use of the original repository of this module and only update the subtree to this module within your project as mentioned above.
 
 ### Attribution
