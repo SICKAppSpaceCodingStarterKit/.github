@@ -3,13 +3,13 @@
 - [Table of content](#table-of-content)
 - [Overview of the SICK AppSpace Coding Starter Kit (CSK)](#overview-of-the-sick-appspace-coding-starter-kit-csk)
 - [Introduction](#introduction)
-- [Using the SICK AppSpace Coding Starter Kit modules code](#using-the-sick-appspace-coding-starter-kit-modules-code)
+- [Using the code of SICK AppSpace Coding Starter Kit modules](#using-the-code-of-sick-appspace-coding-starter-kit-modules)
   - [Option A – Multiple apps approach](#option-a-multiple-apps-approach)
   - [Option B – Single app approach](#option-b--single-app-approach)
     - [Copying manually CROWN manifest (for AppStudio version < 3.5.0)](#copying-manually-crown-manifest-for-appstudio-version--350)
-- [PRO / CONS of different approaches](#pro--cons-of-different-approaches)
-  - [Multiple apps](#multiple-apps)
-  - [Single app](#single-app)
+  - [PRO / CONS of different approaches](#pro--cons-of-different-approaches)
+    - [Multiple apps](#multiple-apps)
+    - [Single app](#single-app)
 - [CSK structure overview](#csk-structure-overview)
 - [Using the SICK AppSpace Coding Starter Kit](#using-the-sick-appspace-coding-starter-kit)
   - [FlowConfig](#flowconfig)
@@ -62,7 +62,7 @@ A key component of CSK is common naming, documentation, and code structure to ma
 
 The SICK AppSpace Coding Starter Kit is not specific to a particular application domain, and the intended users are application developers working on source code. For certain application domains or devices, other starting points may be more appropriate, such as SICK Nova for 2D-vision applications on InspectorP-series devices. Users are encouraged to evaluate the different options and work with the ones that meet their needs.
 
-# Using the SICK AppSpace Coding Starter Kit modules code
+# Using the code of SICK AppSpace Coding Starter Kit modules
 
 There are 2 different possibilities to use the modules.
 The modules are developed and structured in a way that you can simply copy the content into a single app or you can run them in parallel apps and use their CROWN interfaces. Both ways will be described in the following (incl. PRO + CONS of these two approaches):
@@ -180,9 +180,9 @@ If you want to use different modules in one single app, you could do it as follo
 
 4. Repeat this for all wanted modules
 
-# PRO / CONS of different approaches
+## PRO / CONS of different approaches
 
-## Multiple apps
+### Multiple apps
 
 PRO
 
@@ -196,7 +196,7 @@ CONS
 - Often necessary to communicate via CROWN interface to share content between the modules (key/value table need to be transformed into Container objects, but there are predefined functions available for this)
 - To keep performance if modules perform "cross module function calls", modules should be developed by paying attention regarding garbage collection (see chapter [Performance](#performance))
 
-## Single app
+### Single app
 
 PRO
 
@@ -215,7 +215,7 @@ CONS
 
 # Using the SICK AppSpace Coding Starter Kit
 
-You will find templates which show how the modules are used in the 2 mentioned ways (single app / multiple apps) within this GitHub organization.
+You will find templates which show how the code of the modules is used in the 2 mentioned ways (single app / multiple apps) within this GitHub organization.
 
 The templates can be used to understand how to combine the modules as described above.
 In addition, the templates can be used "out of the box" for typical use cases (e.g. device setup, camera connection, ...).
@@ -225,6 +225,8 @@ In general, each CSK module provides documentation for the features provided, ba
 Additionally, inside of the scripts of the modules you will find some internal code explanation and optionally some sample code within the main script to show how typical functions of this module could be used.
 
 The idea is to keep the modules as generic as possible and only use their features (optionally from an application app). This way, it is easy to upgrade certain modules to newer versions without having to adjust the customizations made before.
+
+As a lot of the modules provide an UI, it can be even possible to solve applications out of the box by just running the modules on a device, connect to them via browser and configure them.
 
 ## FlowConfig
 
