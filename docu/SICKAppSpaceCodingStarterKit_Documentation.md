@@ -3,7 +3,7 @@
 - [Table of content](#table-of-content)
 - [Overview of the SICK AppSpace Coding Starter Kit (CSK)](#overview-of-the-sick-appspace-coding-starter-kit-csk)
 - [Introduction](#introduction)
-- [Using the SICK AppSpace Coding Starter Kit modules](#using-the-sick-appspace-coding-starter-kit-modules)
+- [Using the SICK AppSpace Coding Starter Kit modules code](#using-the-sick-appspace-coding-starter-kit-modules-code)
   - [Option A – Multiple apps approach](#option-a-multiple-apps-approach)
   - [Option B – Single app approach](#option-b--single-app-approach)
     - [Copying manually CROWN manifest (for AppStudio version < 3.5.0)](#copying-manually-crown-manifest-for-appstudio-version--350)
@@ -12,6 +12,7 @@
   - [Single app](#single-app)
 - [CSK structure overview](#csk-structure-overview)
 - [Using the SICK AppSpace Coding Starter Kit](#using-the-sick-appspace-coding-starter-kit)
+  - [FlowConfig](#flowconfig)
 - [Developing guideline for modules](#developing-guideline-for-modules)
   - [Structure](#structure)
   - [Files](#files)
@@ -21,6 +22,12 @@
       - [[ModuleName]_Processing.lua for multiple instances](#modulename_processinglua-for-multiple-instances)
     - [[ModuleName]_Controller.lua](#modulename_controllerlua)
       - [[ModuleName]_Controller.lua for multiple instances](#modulename_controllerlua-for-multiple-instances)
+	- [FlowConfig Functions and Events](#flowconfig-functions-and-events)
+	- [FlowConfig Parameter Logic](#flowconfig-parameter-logic)
+	- [FlowConfig Files](#flowconfig-files)
+	  - [Pure Data Provider](#pure-data-provider)
+	  - [Pure Data Consumer](#pure-data-consumer)
+	  - [Pure Processor](#pure-processor)
 	- [User Interface](#user-interface)
   - [CSK_Application](#csk_application)
   - [Documentation](#documentation)
@@ -45,13 +52,17 @@ Modules appear as apps in the SICK AppStudio workspace, provide the key function
 
 In addition, the SICK AppSpace Coding Starter Kit includes templates that represent application-specific combinations of the modules. The templates demonstrate how modules interact and serve as a starting point for further coding. For example, the remote camera template covers a basic image processing application on a SIM with multiple remote cameras and the steps of setup, image acquisition and result communication, where the data processing step can be freely customized at the code level - as well as all other steps of the application and the respective UIs.
 
+Another part is the FlowConfig feature. This makes it possible to link the inputs / outputs of CSK modules with each other in a graphical way (see [FlowConfig](#flowconfig))
+
+![](/docu/media/10.1_FlowConfigFeature.png)
+
 By using SICK AppSpace Coding Starter Kit modules or templates, SensorApp developers do not have to start programming from scratch, but work with a modular, extensible architecture right from the start.
 
 A key component of CSK is common naming, documentation, and code structure to make it easier to share modules, find the relevant code sections, and understand and extend modules. If you make use of the CSK modules, please share as much as possible with the community.
 
 The SICK AppSpace Coding Starter Kit is not specific to a particular application domain, and the intended users are application developers working on source code. For certain application domains or devices, other starting points may be more appropriate, such as SICK Nova for 2D-vision applications on InspectorP-series devices. Users are encouraged to evaluate the different options and work with the ones that meet their needs.
 
-# Using the SICK AppSpace Coding Starter Kit modules
+# Using the SICK AppSpace Coding Starter Kit modules code
 
 There are 2 different possibilities to use the modules.
 The modules are developed and structured in a way that you can simply copy the content into a single app or you can run them in parallel apps and use their CROWN interfaces. Both ways will be described in the following (incl. PRO + CONS of these two approaches):
@@ -215,6 +226,20 @@ Additionally, inside of the scripts of the modules you will find some internal c
 
 The idea is to keep the modules as generic as possible and only use their features (optionally from an application app). This way, it is easy to upgrade certain modules to newer versions without having to adjust the customizations made before.
 
+## FlowConfig
+
+As already mentioned, each CSK module provides at least one generic feature. To solve specific applications it is very interesting to combine these features with each other.
+
+To do so, a lot of modules provide their results within served events and other modules can register on these events to further process the data.
+
+A lot of modules provide a function to register to these events and provide this setup on the UI as well.
+
+To make it easier to link these inputs / outputs it is possible to use the FlowConfig feature, which is provided as a CSK module as well (see [FlowConfig module](https://github.com/SICKAppSpaceCodingStarterKit/CSK_Module_FlowConfig).
+
+Within the [Developing guideline for modules](#developing-guideline-for-modules) you will find the relevant code to extend a module to support the FlowConfig feature.
+
+![](/docu/media/10.1_FlowConfigFeature.png)
+
 # Developing guideline for modules
 
 This guide is meant as a suggestion to find a common way to code modular apps for the SICK AppSpace Coding Starter Kit, so that it becomes easy to combine these different modules with each other and to benefit from this when sharing these modules and to understand the code written by another developer faster by knowing this guide (“where to find the relevant part inside of the code”).
@@ -274,12 +299,19 @@ Each module should consist of a “main” lua-file, named like the module (eg. 
 Mostly this file will load (require) the relevant script(s) first to give access to the function scope of this module.
 
 ```
-local availableAPIs = require('Communication/FTPClient/helper/checkAPIs')
+_G.availableAPIs = require('Communication/FTPClient/helper/checkAPIs')
+-- Check if module can run on device
+if _G.availableAPIs.specific == false then
+  _G.logger:warning("CSK_FTPClient: Relevant CROWN(s) not available on device. Module is not supported...")
+end
 -- ...
 _G.ftpClient_Model = require('Communication/FTPClient/FTPClient_Model')
+require('Communication/FTPClient/FlowConfig/FTPClient_FlowConfig') -- relevant if the module supports the FlowConfig
 ```
 
-The first line of code is purely optional and loads all relevant APIs for this module if this does not happen automatically because the app property "LuaLoadAllEngineAPI" is set to FALSE (for more info on this topic, see the chapter [Performance](#performance) ).
+The upper part of the code loads and checks all relevant APIs for this module if this does not happen automatically because the app property "LuaLoadAllEngineAPI" is set to FALSE (for more info on this topic, see the chapter [Performance](#performance) ).
+
+This global variable can be used inside of the whole code to check if the feature is available on the device.
 
 Also, a SharedLogger + Log.Handler should be created. This way all modules send their logging messages to the same SharedLogger and the "LoggerModule" can be used to collect all these messages.
 
@@ -395,7 +427,6 @@ As mentioned before, there are different kinds of modules. If it is about module
 
    ```
    moduleName_Model.helperFuncs = require('Mainfolder/Subfolder/helper/funcs')
-   moduleName_Model.availableAPIs = require('Mainfolder/Subfolder/helper/checkAPIs') 
    ```
 
 5. Adding all relevant runtime parameters / objects to this table incl. short internal docu what it is for, like:
@@ -404,6 +435,7 @@ As mentioned before, there are different kinds of modules. If it is about module
    ftpClient_Model.ftpClient = FTPClient.create() -- FTP client to use for FTP connection
    ftpClient_Model.formatter = Image.Format.JPEG.create() -- Formatter instance (JPG per default)
    ftpClient_Model.counter = 1 -- Internal counter, e.g. used to count sent data and use it for naming
+   ftpClient_Model.version = Engine.getCurrentAppVersion() -- Version of module
    --...
    ```
 
@@ -413,10 +445,11 @@ As mentioned before, there are different kinds of modules. If it is about module
    ftpClient_Model.formatter:encode(image)
    ```
 
-6. Additionally it is recommended to put all data that is relevant to probably be saved persistently to put into an additional sub-table like this:
+6. Additionally it is possible to put all data that is relevant to be saved persistently to put into an additional sub-table like this:
 
    ```
    ftpClient_Model.parameters = {}
+   ftpClient_Model.parameters.flowConfigPriority = CSK_FlowConfig ~= nil or false
    ftpClient_Model.parameters.serverIP = '192.168.0.201'
    ftpClient_Model.parameters.port = 21
    ftpClient_Model.parameters.subTable = {}
@@ -462,6 +495,7 @@ Again, create a table to hold all module relevant parameters + functions to retu
 ```
 local remoteCamera= {}
 remoteCamera.__index = remoteCamera
+remoteCamera.version = Engine.getCurrentAppVersion() -- Version of module
 
 --@ remoteCamera.create():
 function remoteCamera.create()
@@ -469,6 +503,7 @@ function remoteCamera.create()
   setmetatable(self, remoteCamera)
   self.isConnected = false
   self.parameters = {}
+  self.parameters.flowConfigPriority = CSK_FlowConfig ~= nil or false
   self.parameters.cameraIP = '192.168.1.100'
   self.CameraProvider = Image.Provider.RemoteCamera.create()
   --...
@@ -666,6 +701,451 @@ Script.serveFunction("CSK_ModuleName.setSelectedInstance", setSelectedInstance)
 ```
 
 Besides, there are also functions to dynamically add/reset the number of instances.
+
+### FlowConfig Functions and Events
+
+If a module should be available within the FlowConfig, there are some events and function it should provide.
+
+Additionally, there are some other relevant lines of code already mentioned in other chapters. Please search for 'FlowConfig' on this documentation page to find other relevant lines of code.
+
+**INFO: Before you try to extend a module with this feature, you should be sure to understand all the other CSK basics!**
+
+- Make sure to check if the CSK_Module_FlowConfig is available on the device. Place this check within the 'checkAPIs.lua' file like this:
+
+```
+...
+-- Check if related CSK modules are available to be used
+  local appList = Engine.listApps()
+  for i = 1, #appList do
+    if appList[i] == 'CSK_Module_PersistentData' then
+      CSK_PersistentData = require 'API.CSK_PersistentData'
+    elseif appList[i] == 'CSK_Module_UserManagement' then
+      CSK_UserManagement = require 'API.CSK_UserManagement'
+    elseif appList[i] == 'CSK_Module_FlowConfig' then
+      CSK_FlowConfig = require 'API.CSK_FlowConfig'
+    end
+  end
+...
+```
+
+- Within the main file, require the main FlowConfig file (regarding the FlowConfig files, see chapter [FlowConfig Files](#flowconfig-files)) and hand over the handle of the instances.
+
+```
+local setInstanceHandle = require('MainFolder/ModuleName/FlowConfig/ModuleName_FlowConfig')
+...
+setInstanceHandle(multiDataLogger_Instances)
+```  
+
+- Module should provide a function 'setFlowConfigPriority' to set the status if the FlowConfig should have priority (see chapter [FlowConfig Parameter Logic](#flowconfig-parameter-logic) ) and an event named 'OnNewStatusFlowConfigPriority' to provide this status.
+
+- Module should provide a function 'getStatusModuleActive' to inform the CSK_Module_FlowConfig if the features of the module are available on the device the module is running on.
+
+- Module should provide a function 'clearFlowConfigRelevantConfiguration' to clear all FlowConfig relevant configuration if the FlowConfig priority is active for the module (see chapter [FlowConfig Parameter Logic](#flowconfig-parameter-logic) ).
+
+### FlowConfig Parameter Logic
+
+Within the FlowConfig it is possible to link the features of CSK modules and to set some related parameters for these modules.
+
+Because of this, it is possible that the setup of the FlowConfig differs from the setup done within the specific module and could lead to unexpected behaviour.
+
+To prevent this, there is the "FlowConfig priority". The idea of this priority is to clear all configurations of the module which can be done via FlowConfig as well. That means, if the priority is active, these configurations are only controlled via FlowConfig.
+
+If the user is aware of this possible vulnerability, it is still possible to deactivate that priority and to combine module specific configuration with the FlowConfig setup. It is just important that these configurations are in harmony with each other.
+
+In general the logic of loading the parameters via the CSK_Module_PersistentData (see [Persistent Data](#persistent-data) ) is like this:
+
+1) First, each CSK module will load its saved configuration if its 'Load on reboot' status is active (see modules UI)
+
+2) After that, the FlowConfig will load its configuration
+
+3) If the 'FlowConfig priority' status of a module is active, all FlowConfig relevant configurations of these modules will be cleared (the module developer needs to take care of this, see 'clearFlowConfigRelevantConfiguration' function).
+
+4) The configuration stored within the FlowConfig will be set to the related CSK modules
+
+### FlowConfig Files
+
+If the module shoud support the FlowConfig feature, there is even some more additional content to add.
+
+**INFO: Before you try to extend a module with this feature, you should be sure to understand all the other CSK basics!**
+
+First of all, create a "FlowConfig" folder at 'scripts/Mainfolder/Subfolder/' and create a file '[ModuleName]_FlowConfig.lua' in it.
+
+This will be required out of the main file and internally requires all lua files for available FlowConfig features. Additionally it will register to the 'OnClearOldFlow'-event of the FlowConfig CSK module to optionally clear all FlowConfig relevant configuration if a new flow was activated:
+
+```
+require('Communication.FTPClient.FlowConfig.FTPClient_Put')
+--require('Communication.FTPClient.FlowConfig.FTPClient_OtherFeatureA')
+--require('Communication.FTPClient.FlowConfig.FTPClient_OtherFeatureB')
+
+--- Function to react if FlowConfig was updated
+local function handleOnClearOldFlow()
+  if _G.availableAPIs.specific then
+    -- for i = 1, #multiModuleName_Instances do -- only relevant for MultiModules
+      if ftpClient_Model.parameters.flowConfigPriority then
+        CSK_FTPClient.clearFlowConfigRelevantConfiguration()
+      end
+	-- end
+  end
+end
+Script.register('CSK_FlowConfig.OnClearOldFlow', handleOnClearOldFlow)
+
+--[[
+Only relevant for MultiModules
+local function setMultiModuleName_Instances_Handle(handle)
+  multiModuleName_Instances = handle
+end
+
+return setMultiModuleName_Instances_Handle
+]]
+```
+
+The code content of the FlowConfig files depends if the module should only provide data as an output, only consume incoming data or do both of it.
+
+#### Pure Data Provider
+
+Create a file like 'ModuleName_OnNewData.lua' within the 'FlowConfig' folder and require this within the 'Mainfolder/Subfolder/[ModuleName]_FlowConfig.lua' as mentioned above.
+
+This file should include code like this:
+
+```
+-- Block namespace
+local BLOCK_NAMESPACE = "ModuleName_FC.OnNewData"
+local nameOfModule = 'CSK_ModuleName'
+
+--*************************************************************
+--*************************************************************
+
+local function register(handle, _ , callback)
+
+  Container.remove(handle, "CB_Function")
+  Container.add(handle, "CB_Function", callback)
+
+  local function localCallback()
+    if callback ~= nil then
+      Script.callFunction(callback, 'CSK_ModuleName.OnNewData') -- adapt this accordingly
+    else
+      _G.logger:warning(nameOfModule .. ": " .. BLOCK_NAMESPACE .. ".CB_Function missing!")
+    end
+  end
+  Script.register('CSK_FlowConfig.OnNewFlowConfig', localCallback)
+
+  return true
+end
+Script.serveFunction(BLOCK_NAMESPACE ..".register", register)
+
+--*************************************************************
+--*************************************************************
+
+local function create()
+  local container = Container.create()
+  Container.add(container, "CB_Function", "")
+  return(container)
+end
+Script.serveFunction(BLOCK_NAMESPACE .. ".create", create)
+```
+
+The 'create' function will be called, as soon as a block of this feature exists within the flow.
+
+If this block is linked to another block, it will call the 'register' function. Within this function it is possible to edit the name of the event to provide the output content of the module.
+
+As you can see, it is just about to provide the information on what event the output data can be received.
+
+Additionally the manifest needs to be edited. For this, create another CROWON like 'ModuleName_FC'.
+
+The ending '_FC' is important, as the CSK_Module_FlowConfig will check for CROWNs ending like that to take these into account for the FlowConfig.
+
+As well, please make sure to set the 'Data-Flow'-attribute of the event to 'Include' so that it will be visible within the BlocksEditor.
+
+See here an example for such a manifest:
+
+![](/docu/media/10.1_FlowConfigManifestProvider.png)
+
+If the block should be available multiple times (e.g. to provide data of multiple instances) the code is a little bit more complex to keep track of the created blocks:
+
+```
+-- Block namespace
+local BLOCK_NAMESPACE = "MultiRemoteCamera_FC.OnNewImage"
+local nameOfModule = 'CSK_MultiRemoteCamera'
+
+--*************************************************************
+--*************************************************************
+
+-- Required to keep track of already allocated resource
+local instanceTable = {}
+
+local function register(handle, _ , callback)
+
+  Container.remove(handle, "CB_Function")
+  Container.add(handle, "CB_Function", callback)
+
+  local instance = Container.get(handle, 'Instance')
+
+  -- Check if amount of instances is valid
+  -- if not: add multiple additional instances
+  while true do
+    local amount = CSK_MultiRemoteCamera.getInstancesAmount()
+    if amount < instance then
+      CSK_MultiRemoteCamera.addInstance()
+    else
+      break
+    end
+  end
+
+  local function localCallback()
+    if callback ~= nil then
+      Script.callFunction(callback, 'CSK_MultiRemoteCamera.OnNewImageCamera' .. tostring(instance)) -- Add info about specific event of the instance
+    else
+      _G.logger:warning(nameOfModule .. ": " .. BLOCK_NAMESPACE .. ".CB_Function missing!")
+    end
+  end
+  Script.register('CSK_FlowConfig.OnNewFlowConfig', localCallback)
+
+  return true
+end
+Script.serveFunction(BLOCK_NAMESPACE ..".register", register)
+
+--*************************************************************
+--*************************************************************
+
+local function create(instance)
+
+  -- Check if same instance is already configured
+  if nil ~= instanceTable[instance] then
+    _G.logger:warning(nameOfModule .. ': Instance already in use, please choose another one')
+    return nil
+  else
+    -- Otherwise create handle and store the restriced resource
+    local handle = Container.create()
+    instanceTable[instance] = instance
+    Container.add(handle, 'Instance', instance)
+    Container.add(handle, "CB_Function", "")
+    return handle
+  end
+end
+Script.serveFunction(BLOCK_NAMESPACE .. ".create", create)
+
+--- Function to reset instances if FlowConfig was cleared
+local function handleOnClearOldFlow()
+  Script.releaseObject(instanceTable)
+  instanceTable = {}
+end
+Script.register('CSK_FlowConfig.OnClearOldFlow', handleOnClearOldFlow)
+
+```
+
+#### Pure Data Consumer
+
+If the feature should only process incoming data, create a LUA file like 'ModuleName_DoSomething' within the 'FlowConfig' folder and require this within the 'Mainfolder/Subfolder/[ModuleName]_FlowConfig.lua' as well.
+
+This file should include code like this:
+
+```
+-- Block namespace
+local BLOCK_NAMESPACE = 'ModuleName_FC.DataSource'
+local nameOfModule = 'CSK_ModuleName'
+
+--*************************************************************
+--*************************************************************
+
+-- Required to keep track of already allocated resource
+local instanceTable = {}
+
+local function setDataSource(handle, dataSource)
+
+  local instance = Container.get(handle, 'Instance')
+
+  -- Check if amount of instances is valid
+  -- if not: add multiple additional instances
+  while true do
+    local amount = CSK_ModuleName.getInstancesAmount()
+    if amount < instance then
+      CSK_ModuleName.addInstance()
+    else
+      CSK_ModuleName.setSelectedInstance(instance)
+      CSK_ModuleName.setRegisterEvent(dataSource) -- use the received data (name of event with data) to register to it
+      break
+    end
+  end
+end
+Script.serveFunction(BLOCK_NAMESPACE .. '.dataSource', setDataSource)
+
+--*************************************************************
+--*************************************************************
+
+local function create(instance)
+
+  -- Check if same instance is already configured
+  if nil ~= instanceTable[instance] then
+    _G.logger:warning(nameOfModule .. ': Instance already in use, please choose another one')
+    return nil
+  else
+    -- Otherwise create handle and store the restriced resource
+    local handle = Container.create()
+    instanceTable[instance] = instance
+    Container.add(handle, 'Instance', instance)
+    return handle
+  end
+end
+Script.serveFunction(BLOCK_NAMESPACE .. '.create', create)
+
+--- Function to reset instances if FlowConfig was cleared
+local function handleOnClearOldFlow()
+  Script.releaseObject(instanceTable)
+  instanceTable = {}
+end
+Script.register('CSK_FlowConfig.OnClearOldFlow', handleOnClearOldFlow)
+```
+
+As you see, in this case it will use the received data (the name of the event of another module to get the data) to register to this event, so that the module can receive this data.
+
+Manifest can look like this:
+
+![](/docu/media/10.1_FlowConfigManifestConsumer.png)
+
+Of course it is possible to put some more logic within the code and add additional parameters to set, to control what should happen if somebody creates a flow with this feature and to react on optional parameters:
+
+```
+-- Block namespace
+local BLOCK_NAMESPACE = 'MQTTClient_FC.Publish'
+local nameOfModule = 'CSK_MQTTClient'
+
+--*************************************************************
+--*************************************************************
+
+-- Required to keep track of already allocated resource
+local instanceTable = {}
+
+local function publish(handle, data1, data2, data3, data4)
+  local topic = Container.get(handle, 'Topic')
+  local qos = Container.get(handle, 'QoS')
+  local retain = Container.get(handle, 'Retain')
+
+  if data1 then
+    CSK_MQTTClient.addPublishEvent(data1, topic, qos, retain)
+  end
+  if data2 then
+    CSK_MQTTClient.addPublishEvent(data2, topic, qos, retain)
+  end
+  if data3 then
+    CSK_MQTTClient.addPublishEvent(data3, topic, qos, retain)
+  end
+  if data4 then
+    CSK_MQTTClient.addPublishEvent(data4, topic, qos, retain)
+  end
+end
+Script.serveFunction(BLOCK_NAMESPACE .. '.publish', publish)
+
+--*************************************************************
+--*************************************************************
+
+local function create(topic, qos, retain)
+
+  if nil ~= instanceTable[topic] then
+    _G.logger:warning(nameOfModule .. ": Instance already in use, please choose another one")
+    return nil
+  else
+    -- Otherwise create handle and store the restriced resource
+    local handle = Container.create()
+    instanceTable[topic] = topic
+    Container.add(handle, 'Topic', topic)
+    Container.add(handle, 'QoS', qos)
+    Container.add(handle, 'Retain', retain)
+    return handle
+  end
+end
+Script.serveFunction(BLOCK_NAMESPACE .. '.create', create)
+
+--- Function to reset instances if FlowConfig was cleared
+local function handleOnClearOldFlow()
+  Script.releaseObject(instanceTable)
+  instanceTable = {}
+end
+Script.register('CSK_FlowConfig.OnClearOldFlow', handleOnClearOldFlow)
+```
+
+#### Data Processor
+
+If the feature should receive, process and forward data, this is a kind of combination of the 2 mentioned methods.
+
+Again, create a LUA file like 'ModuleName_ProcessSomething' within the 'FlowConfig' folder and require this within the 'Mainfolder/Subfolder/[ModuleName]_FlowConfig.lua' as well.
+
+This file should include code like this:
+
+```
+-- Block namespace
+local BLOCK_NAMESPACE = 'ModuleName_FC.Process'
+local nameOfModule = 'CSK_ModuleName'
+
+--*************************************************************
+--*************************************************************
+
+-- Required to keep track of already allocated resource
+local instanceTable = {}
+
+local function process(handle, dataSource)
+
+  local instance = Container.get(handle, 'Instance')
+
+  -- Check if amount of instances is valid
+  -- if not: add multiple additional instances
+  while true do
+    local amount = CSK_ModuleName.getInstancesAmount()
+    if amount < instance then
+      CSK_ModuleName.addInstance()
+    else
+      CSK_ModuleName.setInstance(instance)
+      CSK_ModuleName.setRegisterEvent(dataSource)
+      break
+    end
+  end
+
+  -- Here it will check for selected mode. This is only optional
+  local mode = Container.get(handle, 'Mode')
+  if mode == 'TOTAL_SUBRESULTS' then
+    return 'CSK_ModuleName.OnNewStringResult' .. tostring(instance) -- This will return the name of the event, providing relevant data for further processing
+  else
+    return 'CSK_ModuleName.OnNewResult' .. tostring(instance)
+  end
+end
+Script.serveFunction(BLOCK_NAMESPACE .. '.process', process)
+
+--*************************************************************
+--*************************************************************
+
+local function create(instance, mode) -- 'mode' is an extra parameter used in this example but not necessary if not used...
+
+  local fullInstanceName = tostring(instance) .. tostring(mode)
+
+  -- Check if same instance is already configured
+  if instanceTable[fullInstanceName] ~= nil then
+    _G.logger:warning(nameOfModule .. "Instance already in use, please choose another one")
+    return nil
+  else
+    -- Otherwise create handle and store the restriced resource
+    local handle = Container.create()
+    instanceTable[fullInstanceName] = fullInstanceName
+    Container.add(handle, 'Instance', instance)
+    Container.add(handle, 'Mode', mode) -- optional
+    Container.add(handle, "CB_Function", "")
+    return handle
+  end
+end
+Script.serveFunction(BLOCK_NAMESPACE .. '.create', create)
+
+--- Function to reset instances if FlowConfig was cleared
+local function handleOnClearOldFlow()
+  Script.releaseObject(instanceTable)
+  instanceTable = {}
+end
+Script.register('CSK_FlowConfig.OnClearOldFlow', handleOnClearOldFlow)
+
+```
+
+As you can see, now it will register to an event to receive data and will return the name of event itself will provide data, so that other modules can react on that.
+
+Manifest can look e.g. like this:
+
+![](/docu/media/10.1_FlowConfigManifestProcessor.png)
 
 ### User Interface
 
