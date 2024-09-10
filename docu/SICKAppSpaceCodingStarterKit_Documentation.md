@@ -83,9 +83,9 @@ Now you have different options:
 
 2. Additionally you can now create another app (e.g. named “CSK_Application_Name”). From this app you can use the provided functionalities of the modules. If needed, this app can include a customized user interface with bindings to the provided CROWNs of the modules (or even implement UIs of modules into the application specific UI). 
 
-3. By default, when you add the "HomeScreen" app to your working directory, you get an automatically generated UI that is displayed when you connect to the device IP via a browser (e.g. "http://192.168.0.1"). This enables you to easily switch between the different user interfaces such as the specific module UI or your customized user interface.
+3. By default, when you add the [CSK_Module_SensorAppOverview](https://github.com/SICKAppSpaceCodingStarterKit/CSK_Module_SensorAppOverview) app to your working directory, you get an automatically generated UI that is displayed when you connect to the device IP via a browser (e.g. "http://192.168.0.1"). This enables you to easily switch between the different user interfaces such as the specific module UI or your customized user interface.
 
-   ![](/docu/media/10.1_MultipleAppHomescreenUI.png)
+   ![](/docu/media/10.1_MultipleAppSensorAppOverviewUI.png)
 
    However, it is also possible to simply copy the relevant UIs (html + css file) of the other modules into the "pages" folder of the application and adapt the "navigation.json" file to display all UIs on one page. Since all relevant events and functions will still be served by the modules, the UI(s) will remain in working condition. 
 
@@ -852,7 +852,7 @@ If this block is linked to another block, it will call the 'register' function. 
 
 As you can see, it is just about to provide the information on what event the output data can be received.
 
-Additionally the manifest needs to be edited. For this, create another CROWON like 'ModuleName_FC'.
+Additionally the manifest needs to be edited. For this, create another CROWN like 'ModuleName_FC'.
 
 The ending '_FC' is important, as the CSK_Module_FlowConfig will check for CROWNs ending like that to take these into account for the FlowConfig.
 
