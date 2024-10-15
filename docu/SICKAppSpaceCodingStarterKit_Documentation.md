@@ -30,6 +30,9 @@
 	  - [Pure Processor](#pure-processor)
 	- [User Interface](#user-interface)
   - [CSK_Application](#csk_application)
+  - [Relevant functions and events](#relevant_functions_and_events)
+	  - [Function: resetModule](#function-reset)
+	  - [Function: getStatusModuleActive](#event-onnewstatusmoduleisactive)
   - [Documentation](#documentation)
   - [Persistent Data](#persistent-data)
   - [User Management](#user-management)
@@ -39,6 +42,8 @@
 # Overview of the SICK AppSpace Coding Starter Kit (CSK)
 
 This article will explain what the approach of the SICK AppSpace Coding Starter Kit is and how you can use its “modules / templates” and how to code your own modules.
+
+There are some [videos](https://sickappspacecodingstarterkit.github.io/) available to give a quick introduction to this approach.
 
 General information regarding SICK AppSpace can be found here: https://supportportal.sick.com/tutorial/sick-appspace-articles/
 
@@ -230,6 +235,8 @@ As a lot of the modules provide an UI, it can be even possible to solve applicat
 
 ## FlowConfig
 
+(**INFO** Watch the [FlowConfig video](https://sickappspacecodingstarterkit.github.io/) to get a short introduction of this feature.)
+
 As already mentioned, each CSK module provides at least one generic feature. To solve specific applications it is very interesting to combine these features with each other.
 
 To do so, a lot of modules provide their results within served events and other modules can register on these events to further process the data.
@@ -246,6 +253,8 @@ Within the [Developing guideline for modules](#developing-guideline-for-modules)
 
 This guide is meant as a suggestion to find a common way to code modular apps for the SICK AppSpace Coding Starter Kit, so that it becomes easy to combine these different modules with each other and to benefit from this when sharing these modules and to understand the code written by another developer faster by knowing this guide (“where to find the relevant part inside of the code”).
 
+(**INFO** Watch the [Extending the function scope video](https://sickappspacecodingstarterkit.github.io/) to get an idea what it looks like to extend the code of an existing module.)
+
 As already mentioned: naming, documentation and code structure is a major part of this.
 
 In general, this guideline is based on the AppSpace Application Development Guideline (https://supportportal.sick.com/tutorial/appspace-application-development-guidelines/)
@@ -258,7 +267,7 @@ There are different kinds of modules:
 
 2. Modules that provide a functional scope using one or more AppEngine APIs and provide additional functionality using these different APIs (e.g. the CSK_Module_DateTime incl. NTP config)
 
-3. Modules with complex functionality using one or more AppEngine APIs and providing customized (kind of) classes of this module (e.g. CSK_Module_SingleRemoteCamera)
+3. Modules with complex functionality using one or more AppEngine APIs and providing customized (kind of) classes of this module (e.g. CSK_Module_MultiRemoteCamera) for object-oriented programming.
 
 Beside that there is the difference between "Single"- and "Multi"- modules:
 
@@ -369,7 +378,7 @@ Script.register("Engine.OnStarted", main)
 --Script.register("CSK_FTPClient.OnDataLoadedOnReboot", main)
 ```
 
-If you make use of modules with "kind of" classes it is a little bit different. Please check the chapters:
+If you make use of modules with "kind of" classes for object-oriented programming it is a little bit different. Please check the chapters:
 [[ModuleName]_Model.lua with kind of "classes" for single instance](#modulename_modellua-with-kind-of-classes-for-single-instance)
 and
 [[ModuleName]_Model.lua with kind of "classes" and multiple instances](#modulename_modellua-with-kind-of-classes-and-multiple-instances)
@@ -398,7 +407,7 @@ See chapter [[ModuleName]_Model.lua with kind of "classes" and multiple instance
 
 ### [ModuleName]_Model.lua without kind of "classes"
 
-As mentioned before, there are different kinds of modules. If it is about modules without kind of "classes", this script should at least consist of the following parts:
+As mentioned before, there are different kinds of modules. If it is about modules without the need of "classes" for object-oriented programming, this script should at least consist of the following parts:
 
 1. Creating a table to hold all module relevant parameters + functions to return this at the end of this script. With this you can “require” this module from another script. E.g.:
 
@@ -490,7 +499,7 @@ As mentioned before, there are different kinds of modules. If it is about module
 
 ### [ModuleName]_Model.lua with kind of "classes" for single instance
 
-As mentioned before, there is also the more complex module type, providing kind of “classes” (LUA does not support classes but tables can be used in some senses…). There are some differences.
+As mentioned before, there is also the more complex module type, providing kind of “classes” (LUA does not support classes but tables can be used in some senses…) for object-oriented programming. There are some differences.
 
 Again, create a table to hold all module relevant parameters + functions to return this at the end of this script. As this time the module will provide the possibility to create objects with internal parameters + functions you will need to have a “create”-function to return this object. For this you can use something like:
 
@@ -546,7 +555,7 @@ _G. remoteCameraObject:connectCamera()
 
 ### [ModuleName]_Model.lua with kind of "classes" and multiple instances
 
-This approach extends the [ModuleName]_Model.lua with kind of "classes" for a single instance.
+This approach extends the [ModuleName]_Model.lua from the previous chapter.
 
 It is possible to create multiple instances to run in parallel (in their own threads). Note: it is a little bit more complex to develop / understand this approach, so you should be already experienced with SICK AppSpace SensorApp development.
 
@@ -1235,6 +1244,32 @@ If you want to have a customized UI, here are some hints:
 2. It is also possible to combine UIs of modules via iFrames into your application specific UI, e.g.:
 
    ![](/docu/media/10.1_CustomApplicationUI.png)
+
+## Relevant functions and events
+
+There are some functions and events which are quite relevant for the CSK approach and you should know about to understand the background of the code.
+
+Some were already explained within the other chapters. Following you will find some further explainations.
+
+Mostly all these functions and events will exist for each module per default.
+
+### Function: resetModule
+
+Each module should provide a function to reset itself. This function should stop all processing of the module which are not needed per default.
+
+This function should register to the "CSK_PersistentData.OnResetAllModules" event.
+
+This is very helpful if you run multiple processes in different modules but you want to switch to another application and you don't want that unused processes run in the background.
+
+By notifying the "CSK_PersistentData.OnResetAllModules" event all modules will automatically stop and will wait for a new setup.
+	  
+### Function: getStatusModuleActive
+
+As CSK modules are generic, it is possible that you can run CSK based applications on different devices.
+
+Some modules and their features might be not usable on specific devices (due to missing APIs) but still can be installed to the device without errors.
+
+Each module should have a function named "getStatusModuleActive" to give feedback about the status if the module can be used on the current used device so that applications can react on this information.
 
 ## Documentation
 
