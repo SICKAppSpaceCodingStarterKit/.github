@@ -43,7 +43,7 @@
 
 This article will explain what the approach of the SICK AppSpace Coding Starter Kit is and how you can use its “modules / templates” and how to code your own modules.
 
-There are some [videos](https://sickappspacecodingstarterkit.github.io/) available to give a quick introduction to this approach.
+Check out the following [videos](https://sickappspacecodingstarterkit.github.io/) for a quick introduction to the SICK AppSpace Coding Starter Kit.
 
 General information regarding SICK AppSpace can be found here: https://supportportal.sick.com/tutorial/sick-appspace-articles/
 
