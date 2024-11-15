@@ -859,7 +859,7 @@ The 'create' function will be called, as soon as a block of this feature exists 
 
 If this block is linked to another block, it will call the 'register' function. Within this function it is possible to edit the name of the event to provide the output content of the module.
 
-As you can see, it is just about to provide the information on what event the output data can be received.
+The goal in this context is to  provide the information on what event the output data can be received.
 
 Additionally the manifest needs to be edited. For this, create another CROWN like 'ModuleName_FC'.
 
