@@ -749,7 +749,7 @@ setInstanceHandle(multiDataLogger_Instances)
 
 - Module should provide a function 'setFlowConfigPriority' to set the status if the FlowConfig should have priority (see chapter [FlowConfig Parameter Logic](#flowconfig-parameter-logic) ) and an event named 'OnNewStatusFlowConfigPriority' to provide this status.
 
-- Module should provide a function 'getStatusModuleActive' to inform the CSK_Module_FlowConfig if the features of the module are available on the device the module is running on.
+- The module should provide a function 'getStatusModuleActive' to inform the CSK_Module_FlowConfig if the features of the module are available on the device the module is running on.
 
 - The module should provide a function 'clearFlowConfigRelevantConfiguration' to clear all FlowConfig relevant configuration if the FlowConfig priority is active for the module (see chapter [FlowConfig Parameter Logic](#flowconfig-parameter-logic) ).
 
