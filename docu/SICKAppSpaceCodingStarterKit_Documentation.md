@@ -57,7 +57,7 @@ Modules appear as apps in the SICK AppStudio workspace, provide the key function
 
 In addition, the SICK AppSpace Coding Starter Kit includes templates that represent application-specific combinations of the modules. The templates demonstrate how modules interact and serve as a starting point for further coding. For example, the remote camera template covers a basic image processing application on a SIM with multiple remote cameras and the steps of setup, image acquisition and result communication, where the data processing step can be freely customized at the code level - as well as all other steps of the application and the respective UIs.
 
-Another part is the FlowConfig feature. This makes it possible to link the inputs / outputs of CSK modules with each other in a graphical way (see [FlowConfig](#flowconfig))
+The mentioned modules need to be connected to solve an application. To do this, you can use the UIs or the source code of the modules. Alternatively, the FlowConfig feature can be used. This makes it possible to link the inputs / outputs of CSK modules with each other in a graphical way (see [FlowConfig](#flowconfig))
 
 ![](/docu/media/10.1_FlowConfigFeature.png)
 
