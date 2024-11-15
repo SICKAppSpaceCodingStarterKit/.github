@@ -407,7 +407,7 @@ See chapter [[ModuleName]_Model.lua with kind of "classes" and multiple instance
 
 ### [ModuleName]_Model.lua without kind of "classes"
 
-As mentioned before, there are different kinds of modules. If it is about modules without the need of "classes" for object-oriented programming, this script should at least consist of the following parts:
+As mentioned before, there are different kinds of modules. If it is about modules without the need of "classes" for object-oriented programming, the script should at least consist of the following parts:
 
 1. Creating a table to hold all module relevant parameters + functions to return this at the end of this script. With this you can “require” this module from another script. E.g.:
 
