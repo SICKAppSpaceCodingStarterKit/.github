@@ -456,7 +456,7 @@ As mentioned before, there are different kinds of modules. If it is about module
    ftpClient_Model.formatter:encode(image)
    ```
 
-6. Additionally it is possible to put all data that is relevant to be saved persistently to put into an additional sub-table like this:
+6. Additionally it is possible to put all data that is relevant to be saved persistently into an additional sub-table like this:
 
    ```
    ftpClient_Model.parameters = {}
