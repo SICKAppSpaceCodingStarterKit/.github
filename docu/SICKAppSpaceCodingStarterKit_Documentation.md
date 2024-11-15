@@ -203,7 +203,7 @@ CONS
 
 ### Single app
 
-PRO
+PROS
 
 - Direct access to instances (incl. their parameters) in LUA
 - Easier/direct customization for specific apps in code
