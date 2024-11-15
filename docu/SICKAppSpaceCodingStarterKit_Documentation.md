@@ -185,7 +185,7 @@ If you want to use different modules in one single app, you could do it as follo
 
 4. Repeat this for all wanted modules
 
-## PRO / CONS of different approaches
+## PROS and CONS of the different approaches
 
 ### Multiple apps
 
