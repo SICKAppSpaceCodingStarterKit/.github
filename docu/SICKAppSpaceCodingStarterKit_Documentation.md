@@ -747,7 +747,7 @@ local setInstanceHandle = require('MainFolder/ModuleName/FlowConfig/ModuleName_F
 setInstanceHandle(multiDataLogger_Instances)
 ```  
 
-- Module should provide a function 'setFlowConfigPriority' to set the status if the FlowConfig should have priority (see chapter [FlowConfig Parameter Logic](#flowconfig-parameter-logic) ) and an event named 'OnNewStatusFlowConfigPriority' to provide this status.
+- The module should provide a function 'setFlowConfigPriority' to set the status if the FlowConfig should have priority (see chapter [FlowConfig Parameter Logic](#flowconfig-parameter-logic) ) and an event named 'OnNewStatusFlowConfigPriority' to provide this status.
 
 - The module should provide a function 'getStatusModuleActive' to inform the CSK_Module_FlowConfig if the features of the module are available on the device the module is running on.
 
