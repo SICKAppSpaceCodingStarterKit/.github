@@ -499,7 +499,7 @@ As mentioned before, there are different kinds of modules. If it is about module
 
 ### [ModuleName]_Model.lua with kind of "classes" for single instance
 
-As mentioned before, there is also the more complex module type, providing kind of “classes” (LUA does not support classes but tables can be used in some senses…) for object-oriented programming. There are some differences.
+As mentioned before, there is also the more complex module type, providing kind of “classes” (LUA does not support classes but tables can be used in a comparable way …) for object-oriented programming. There are some differences.
 
 Again, create a table to hold all module relevant parameters + functions to return this at the end of this script. As this time the module will provide the possibility to create objects with internal parameters + functions you will need to have a “create”-function to return this object. For this you can use something like:
 
