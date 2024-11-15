@@ -775,7 +775,7 @@ In general the logic of loading the parameters via the CSK_Module_PersistentData
 
 ### FlowConfig Files
 
-If the module shoud support the FlowConfig feature, there is even some more additional content to add.
+If the module you develop shoud support the FlowConfig feature, there is even some more additional content to be added.
 
 **INFO: Before you try to extend a module with this feature, you should be sure to understand all the other CSK basics!**
 
