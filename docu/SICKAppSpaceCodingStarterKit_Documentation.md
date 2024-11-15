@@ -86,7 +86,7 @@ Now you have different options:
    
    For certain use cases it is (at this point in time) already possible to configure the system using the provided user interfaces to solve specific applications.
 
-2. Additionally you can now create another app (e.g. named “CSK_Application_Name”). From this app you can use the provided functionalities of the modules. If needed, this app can include a customized user interface with bindings to the provided CROWNs of the modules (or even implement UIs of modules into the application specific UI). 
+2. Additionally you can now create another app (e.g. named “CSK_Application_Name”). In this app you can use the provided functionalities of the modules. If needed, this app can include a customized user interface with bindings to the provided CROWNs of the modules (or even implement UIs of modules into the application specific UI). 
 
 3. By default, when you add the [CSK_Module_SensorAppOverview](https://github.com/SICKAppSpaceCodingStarterKit/CSK_Module_SensorAppOverview) app to your working directory, you get an automatically generated UI that is displayed when you connect to the device IP via a browser (e.g. "http://192.168.0.1"). This enables you to easily switch between the different user interfaces such as the specific module UI or your customized user interface.
 
