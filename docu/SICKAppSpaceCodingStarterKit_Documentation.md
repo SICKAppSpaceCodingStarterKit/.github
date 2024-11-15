@@ -1249,7 +1249,7 @@ If you want to have a customized UI, here are some hints:
 
 There are some functions and events which are quite relevant for the CSK approach and you should know about to understand the background of the code.
 
-Some were already explained within the other chapters. Following you will find some further explainations.
+Some were already explained within the other chapters. Below you will find some further explanations.
 
 Mostly all these functions and events will exist for each module per default.
 
