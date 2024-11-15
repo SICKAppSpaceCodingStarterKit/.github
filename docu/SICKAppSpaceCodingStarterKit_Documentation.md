@@ -1261,7 +1261,7 @@ This function should register to the "CSK_PersistentData.OnResetAllModules" even
 
 This is very helpful if you run multiple processes in different modules but you want to switch to another application and you don't want that unused processes run in the background.
 
-By notifying the "CSK_PersistentData.OnResetAllModules" event all modules will automatically stop and will wait for a new setup.
+By notifying the "CSK_PersistentData.OnResetAllModules" event all modules will automatically stop and wait for a new setup.
 	  
 ### Function: getStatusModuleActive
 
