@@ -322,7 +322,7 @@ require('Communication/FTPClient/FlowConfig/FTPClient_FlowConfig') -- relevant i
 
 The upper part of the code loads and checks all relevant APIs for this module if this does not happen automatically because the app property "LuaLoadAllEngineAPI" is set to FALSE (for more info on this topic, see the chapter [Performance](#performance) ).
 
-This global variable can be used inside of the whole code to check if the feature is available on the device.
+This global variable can be used anywhere in the code to check if the feature is available on the device.
 
 Also, a SharedLogger + Log.Handler should be created. This way all modules send their logging messages to the same SharedLogger and the "LoggerModule" can be used to collect all these messages.
 
