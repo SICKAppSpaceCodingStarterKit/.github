@@ -1013,7 +1013,7 @@ Manifest can look like this:
 
 ![](/docu/media/10.1_FlowConfigManifestConsumer.png)
 
-Of course it is possible to put some more logic within the code and add additional parameters to set, to control what should happen if somebody creates a flow with this feature and to react on optional parameters:
+Of course it is possible to put some more logic within the code and to add additional parameters that can be set, in order to control what should happen if somebody creates a flow with this feature and to react on optional parameters:
 
 ```
 -- Block namespace
