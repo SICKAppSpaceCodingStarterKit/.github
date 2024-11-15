@@ -1269,7 +1269,7 @@ As CSK modules are generic, it is possible that you can run CSK based applicatio
 
 Some modules and their features might be not usable on specific devices (due to missing APIs) but still can be installed to the device without errors.
 
-Each module should have a function named "getStatusModuleActive" to give feedback about the status if the module can be used on the current used device so that applications can react on this information.
+Each module should have a function named "getStatusModuleActive" to give feedback about the status if the module can be used on the currently used device so that applications can react on this information.
 
 ## Documentation
 
