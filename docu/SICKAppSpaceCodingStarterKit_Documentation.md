@@ -70,7 +70,7 @@ The SICK AppSpace Coding Starter Kit is not specific to a particular application
 # Using the code of SICK AppSpace Coding Starter Kit modules
 
 There are 2 different possibilities to use the modules.
-The modules are developed and structured in a way that you can simply copy the content into a single app or you can run them in parallel apps and use their CROWN interfaces. Both ways will be described in the following (incl. PRO + CONS of these two approaches):
+The modules are developed and structured in a way that you can simply copy the content into a single app or you can run them in parallel apps and use their CROWN interfaces. Both ways are described in the following paragraphs (incl. the PROS and CONS of both approaches):
 
 ## Option A – Multiple apps approach
 
