@@ -220,7 +220,7 @@ CONS
 
 # Using the SICK AppSpace Coding Starter Kit
 
-You will find templates which show how the code of the modules is used in the 2 mentioned ways (single app / multiple apps) within this GitHub organization.
+You can find templates which show how the code of the modules can be used in the 2 mentioned ways (single app / multiple apps) within this GitHub organization.
 
 The templates can be used to understand how to combine the modules as described above.
 In addition, the templates can be used "out of the box" for typical use cases (e.g. device setup, camera connection, ...).
