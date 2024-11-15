@@ -1255,7 +1255,7 @@ Mostly all these functions and events will exist for each module per default.
 
 ### Function: resetModule
 
-Each module should provide a function to reset itself. This function should stop all processing of the module which are not needed per default.
+Each module should provide a function to reset itself. This function should stop all processes of the module which are not needed per default.
 
 This function should register to the "CSK_PersistentData.OnResetAllModules" event.
 
