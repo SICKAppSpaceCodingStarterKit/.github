@@ -1247,7 +1247,7 @@ If you want to have a customized UI, here are some hints:
 
 ## Relevant functions and events
 
-There are some functions and events which are quite relevant for the CSK approach and you should know about to understand the background of the code.
+There are some functions and events which are especially relevant for the CSK approach, which you should know about to understand the background of the code.
 
 Some were already explained within the other chapters. Below you will find some further explanations.
 
