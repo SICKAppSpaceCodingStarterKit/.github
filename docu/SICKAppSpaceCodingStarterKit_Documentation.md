@@ -189,7 +189,7 @@ If you want to use different modules in one single app, you could do it as follo
 
 ### Multiple apps
 
-PRO
+PROS
 
 - Easy implementation of different modules into one working directory
 - Versioning of the modules via app manifest
