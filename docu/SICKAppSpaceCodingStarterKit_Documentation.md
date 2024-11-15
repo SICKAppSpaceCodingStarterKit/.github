@@ -1154,7 +1154,7 @@ Script.register('CSK_FlowConfig.OnClearOldFlow', handleOnClearOldFlow)
 
 As you can see, now it will register to an event to receive data and will return the name of event itself will provide data, so that other modules can react on that.
 
-Manifest can look e.g. like this:
+The manifest might for example look like this:
 
 ![](/docu/media/10.1_FlowConfigManifestProcessor.png)
 
