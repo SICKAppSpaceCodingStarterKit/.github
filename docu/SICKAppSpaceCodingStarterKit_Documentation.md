@@ -253,7 +253,7 @@ Within the [Developing guideline for modules](#developing-guideline-for-modules)
 
 This guide is meant as a suggestion to find a common way to code modular apps for the SICK AppSpace Coding Starter Kit, so that it becomes easy to combine these different modules with each other and to benefit from this when sharing these modules and to understand the code written by another developer faster by knowing this guide (“where to find the relevant part inside of the code”).
 
-(**INFO** Watch the [Extending the function scope video](https://sickappspacecodingstarterkit.github.io/) to get an idea what it looks like to extend the code of an existing module.)
+(**INFO** Watch the [Extending the function scope video](https://sickappspacecodingstarterkit.github.io/) to get an idea of what it looks like to extend the code of an existing module.)
 
 As already mentioned: naming, documentation and code structure is a major part of this.
 
