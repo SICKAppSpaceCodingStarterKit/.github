@@ -237,7 +237,7 @@ As a lot of the modules provide an UI, it can be even possible to solve applicat
 
 (**INFO** Watch the [FlowConfig video](https://sickappspacecodingstarterkit.github.io/) to get a short introduction of this feature.)
 
-As already mentioned, each CSK module provides at least one generic feature. To solve specific applications it is very interesting to combine these features with each other.
+As already mentioned, each CSK module provides at least one generic feature. To solve complex applications, you can combine these features with each other.
 
 To do so, a lot of modules provide their results within served events and other modules can register on these events to further process the data.
 
