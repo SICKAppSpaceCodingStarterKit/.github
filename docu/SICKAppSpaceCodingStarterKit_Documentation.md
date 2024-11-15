@@ -1076,7 +1076,7 @@ Script.register('CSK_FlowConfig.OnClearOldFlow', handleOnClearOldFlow)
 
 #### Data Processor
 
-If the feature should receive, process and forward data, this is a kind of combination of the 2 mentioned methods.
+If the feature should receive, process and forward data, the process of creating it is kind of a combination of the two mentioned methods.
 
 Again, create a LUA file like 'ModuleName_ProcessSomething' within the 'FlowConfig' folder and require this within the 'Mainfolder/Subfolder/[ModuleName]_FlowConfig.lua' as well.
 
