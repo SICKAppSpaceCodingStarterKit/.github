@@ -810,7 +810,7 @@ return setMultiModuleName_Instances_Handle
 ]]
 ```
 
-The code content of the FlowConfig files depends if the module should only provide data as an output, only consume incoming data or do both of it.
+The code content of the FlowConfig files depends on whether the module should only provide data as an output, only consume incoming data or do both.
 
 #### Pure Data Provider
 
