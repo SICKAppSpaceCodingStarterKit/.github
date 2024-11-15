@@ -1009,7 +1009,7 @@ Script.register('CSK_FlowConfig.OnClearOldFlow', handleOnClearOldFlow)
 
 As you see, in this case it will use the received data (the name of the event of another module to get the data) to register to this event, so that the module can receive this data.
 
-Manifest can look like this:
+The manifest can look as follows:
 
 ![](/docu/media/10.1_FlowConfigManifestConsumer.png)
 
