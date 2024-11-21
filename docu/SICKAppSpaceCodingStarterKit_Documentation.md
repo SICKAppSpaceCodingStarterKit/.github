@@ -13,6 +13,7 @@
 - [CSK structure overview](#csk-structure-overview)
 - [Using the SICK AppSpace Coding Starter Kit](#using-the-sick-appspace-coding-starter-kit)
   - [FlowConfig](#flowconfig)
+    - [Good to know](#good-to-know)
 - [Developing guideline for modules](#developing-guideline-for-modules)
   - [Structure](#structure)
   - [Files](#files)
@@ -248,6 +249,13 @@ To make it easier to link these inputs / outputs it is possible to use the FlowC
 Within the [Developing guideline for modules](#developing-guideline-for-modules) you will find the relevant code to extend a module to support the FlowConfig feature.
 
 ![](/docu/media/10.1_FlowConfigFeature.png)
+
+### Good to know
+
+If you make use of the FlowConfig feature, there are some additional things you should know about:
+
+- To prevent different configurations done within the FlowConfig and within a module itself, there is a "FlowConfig priority" flag available (see chapter [FlowConfig parameter logic](#flowconfig-parameter-logic) ).
+- Be aware of the fact that even if you change the FlowConfig configuration, other modules might still be configured to keep / load their specific setup beside of the FlowConfig and will run in parallel as well.
 
 # Developing guideline for modules
 
