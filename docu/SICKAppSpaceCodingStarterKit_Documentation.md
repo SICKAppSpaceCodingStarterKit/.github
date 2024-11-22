@@ -252,10 +252,10 @@ Within the [Developing guideline for modules](#developing-guideline-for-modules)
 
 ### Good to know
 
-If you make use of the FlowConfig feature, there are some additional things you should know about:
+If you make use of the FlowConfig feature, you should be aware of the following aspects:
 
-- To prevent different configurations done within the FlowConfig and within a module itself, there is a "FlowConfig priority" flag available (see chapter [FlowConfig parameter logic](#flowconfig-parameter-logic) ).
-- Be aware of the fact that even if you change the FlowConfig configuration, other modules might still be configured to keep / load their specific setup beside of the FlowConfig and will run in parallel as well.
+- To prevent different configurations done within the FlowConfig and within a module itself, there is a "FlowConfig priority" flag available (see chapter [FlowConfig parameter logic](#flowconfig-parameter-logic)).
+- Even if you change the FlowConfig configuration, other modules might still be configured to keep / load their specific setup besides the FlowConfig and will run that in parallel as well.
 
 # Developing guideline for modules
 
