@@ -1170,6 +1170,8 @@ The manifest might for example look like this:
 
 As already mentioned, it generally makes sense to create a user interface for a module to enable the app user to use the features of the module even without coding anything or at least to give an impression of internal processes by showing results / values.
 
+By default, the UIs are developed for a screen resoultion of 1920x1080px (scaling 100%).
+
 If you used the mentioned "blank" module templates to create a module, it will provide already a first version of a user interface, named accordingly to the module name in its own "pages" folder:
 
 ![](/docu/media/10.1_UserInterfacePage.png)
